@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
@@ -7,7 +7,22 @@ function App() {
   const [count, setCount] = useState(0);
   const [longest, setLongest] = useState(0);
   const [num, setNum] = useState(Math.floor(Math.random() * (10 - 1 + 1)) + 1);
-  const [prev, setPrev] = useState(0);
+  const [prev, setPrev] = useState(null);
+  const [higher, setHigher] = useState(null)
+
+  useEffect(() => {
+    if ((higher && (num >= prev)) || (!higher && (num <= prev))) {
+      setCount((count) => count + 1);
+    } else {
+      setCount(0);
+    }
+  }, [num])
+
+  useEffect(() => {
+    if (count > longest) {
+      setLongest(count);
+    }
+  }, [count])
 
   const randomNumber = (min, max) => {
     return Math.floor(Math.random() * (max - min + 1)) + min;
@@ -18,35 +33,15 @@ function App() {
   };
 
   const handleHigherClick = () => {
-    console.log("prev: " + prev);
+    setHigher(true);
     setPrev(num);
-    console.log("prev: " + prev);
-    console.log("num: " + num);
     handleNumber();
-    console.log("num: " + num);
-    if (num >= prev) {
-      setCount((count) => count + 1);
-      handleLongest();
-    } else {
-      setCount(0);
-    }
   };
 
   const handleLowerClick = () => {
+    setHigher(false);
     setPrev(num);
     handleNumber();
-    if (num <= prev) {
-      setCount((count) => count + 1);
-      handleLongest();
-    } else {
-      setCount(0);
-    }
-  };
-
-  const handleLongest = () => {
-    if (count > longest) {
-      setLongest(count);
-    }
   };
 
   return (
@@ -59,6 +54,7 @@ function App() {
           <img src={reactLogo} className="logo react" alt="React logo" />
         </a>
       </div>
+      <h1>Previous: {prev}</h1>
       <h1>Number: {num}</h1>
       <div className="card">
         <button onClick={handleLowerClick}>
