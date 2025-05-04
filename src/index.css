@@ -1,3 +1,9 @@
+body {
+  display: flex;
+  flex-direction: column;
+  margin: 0;
+}
+
 :root {
   font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
   line-height: 1.5;
@@ -7,27 +13,14 @@
   color: rgba(255, 255, 255, 0.87);
   background-color: #242424;
 
-  font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
-}
-a:hover {
-  color: #535bf2;
-}
-
-body {
-  margin: 0;
-  display: flex;
-  place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
+#root {
+  padding: 2rem;
+  text-align: center;
 }
 
 h1 {
@@ -35,14 +28,21 @@ h1 {
   line-height: 1.1;
 }
 
+h2 {
+  font-size: 4.8em;
+  line-height: 1.1;
+}
+
 button {
   border-radius: 8px;
   border: 1px solid transparent;
   padding: 0.6em 1.2em;
+  width: 30%;
   font-size: 1em;
   font-weight: 500;
   font-family: inherit;
   background-color: #1a1a1a;
+  color: rgba(255, 255, 255, 0.87);
   cursor: pointer;
   transition: border-color 0.25s;
 }
@@ -54,15 +54,37 @@ button:focus-visible {
   outline: 4px auto -webkit-focus-ring-color;
 }
 
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
-  }
-  a:hover {
-    color: #747bff;
-  }
-  button {
-    background-color: #f9f9f9;
-  }
+.card {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+}
+
+.currentNumber {
+  display: flex;
+  margin: 24px;
+
+  border: 5px solid transparent;
+  background-image: linear-gradient(#242424, #242424), radial-gradient(circle at top left, #f00,#3020ff);
+  background-origin: border-box;
+  background-clip: content-box, border-box;
+
+  width: 20vw;
+  height: 20vw;
+  border-radius: 50%;
+  justify-content: center;
+  align-items: center;
+}
+
+.currentNumber h2 {
+  transition: 0.5s ease;
+}
+
+.correct h2 {
+  color: limegreen;
+}
+
+.incorrect h2 {
+  color: red;
 }

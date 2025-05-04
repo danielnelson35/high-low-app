@@ -1,6 +1,4 @@
 import { useState, useEffect } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
 import './App.css'
 
 function App() {
@@ -8,15 +6,7 @@ function App() {
   const [longest, setLongest] = useState(0);
   const [num, setNum] = useState(Math.floor(Math.random() * (10 - 1 + 1)) + 1);
   const [prev, setPrev] = useState(null);
-  const [higher, setHigher] = useState(null)
-
-  useEffect(() => {
-    if ((higher && (num >= prev)) || (!higher && (num <= prev))) {
-      setCount((count) => count + 1);
-    } else {
-      setCount(0);
-    }
-  }, [num])
+  const [feedback, setFeedback] = useState('');
 
   useEffect(() => {
     if (count > longest) {
@@ -28,51 +18,54 @@ function App() {
     return Math.floor(Math.random() * (max - min + 1)) + min;
   };
 
-  const handleNumber = () => {
-    setNum(randomNumber(1, 10));
-  };
+  const handleGuess = (higher) => {
+    const newNum = randomNumber(1, 10);
+    const correctGuess = higher ? newNum >= num : newNum <= num;
+    if (correctGuess) {
+      setCount((count) => count + 1);
+      setFeedback('correct');
+    } else {
+      setCount(0);
+      setFeedback('incorrect');
+    }
 
-  const handleHigherClick = () => {
-    setHigher(true);
     setPrev(num);
-    handleNumber();
-  };
+    setNum(newNum);
 
-  const handleLowerClick = () => {
-    setHigher(false);
-    setPrev(num);
-    handleNumber();
+    setTimeout(() => {
+      setFeedback(null);
+    }, 750);
   };
 
   return (
     <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+      <div className="subRoot">
+        <h1>Higher or Lower</h1>
+        <div>
+          <p>
+            Previous: {prev}
+          </p>
+        </div>
+        <div className="card">
+          <button onClick={() => handleGuess(false)}>
+            Lower
+          </button>
+          <div className={`currentNumber ${feedback}`}>
+            <h2>{num}</h2>
+          </div>
+          <button onClick={() => handleGuess(true)}>
+            Higher
+          </button>
+        </div>
+        <div>
+          <p>
+            Longest streak: {longest}
+          </p>
+          <p>
+            Current Streak: {count}
+          </p>
+        </div>
       </div>
-      <h1>Previous: {prev}</h1>
-      <h1>Number: {num}</h1>
-      <div className="card">
-        <button onClick={handleLowerClick}>
-          Lower
-        </button>
-        <button onClick={handleHigherClick}>
-          Higher
-        </button>
-        <p>
-        Longest streak is {longest}
-        </p>
-        <p>
-          Current Streak is {count}
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
     </>
   )
 }
